@@ -12,11 +12,11 @@ xv = yv = 0;
 trail = [];
 tail = 5;
 points = 0;
+type = [38, 37, 40, 39];
 
 function game() {
   px += xv;
   py += yv;
-
   if (px < 0) {
     px = tc - 1;
   }
@@ -41,6 +41,9 @@ function game() {
     ctx.fillRect(trail[i].x * gs, trail[i].y * gs, gs - 2, gs - 2)
     if (trail[i].x == px && trail[i].y == py) {
       tail = 5;
+      points = 0;
+      htmlPoints = `Puntos: ${points}`;
+      this.document.getElementById("point").innerHTML = htmlPoints;
     }
   }
 
@@ -48,27 +51,68 @@ function game() {
     x: px,
     y: py
   });
- 
+
   while (trail.length > tail) {
     /*html = `<h1>GAME OVER</h1>`
     html = this.document.getElementById("screen");*/
+    
     trail.shift();
+
   }
 
   if (ax == px && ay == py) {
     tail++;
+    console.log(tail)
     points += 1
-    console.log(points)
-    points = this.document.getElementById("point");
+    htmlPoints = `Puntos: ${points}`;
+    this.document.getElementById("point").innerHTML = htmlPoints;
     ax = Math.floor(Math.random() * tc);
     ay = Math.floor(Math.random() * tc);
+  
   }
 
   ctx.fillStyle = "red";
   ctx.fillRect(ax * gs, ay * gs, gs - 2, gs - 2)
 }
 
-function keyPush(e) {
+function keyPush(type) {
+  var key = type.keyCode
+
+  function keyControl(key) {
+    var contols = {
+      '38': [
+        xv = 0,
+        yv = -1
+      ],
+      '37': [
+        xv = -1,
+        yv = 0
+      ],
+      '40': [
+        xv = 0,
+        yv = 1
+      ],
+      '39': [
+        xv = 1,
+        yv = 0
+      ],
+    };
+
+    xv = contols[key][0]
+    yv = contols[key][1]
+
+  }
+
+
+  var control = keyControl(key);
+
+
+}
+
+
+
+
+/*
   switch (e.keyCode) {
     // xv = 0; yv = -1;
     case 38:
@@ -93,5 +137,4 @@ function keyPush(e) {
       xv = 1;
       yv = 0;
       break;
-  }
-}
+  }*/
